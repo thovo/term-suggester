@@ -1,4 +1,5 @@
-import { normalize } from '../helper/normalize';
+import { prepareData } from '../helper/prepare-data';
+import { quickCheckData } from '../helper/quick-check-data';
 import { CustomLogger } from '../logger/logger';
 import type { DistanceFn } from './distance-function.interface';
 
@@ -33,17 +34,11 @@ import type { DistanceFn } from './distance-function.interface';
  * `term` after normalization.
  */
 export const slidingReplacement: DistanceFn = (term, word, logger = new CustomLogger(false)) => {
-	const normalizedTerm = normalize(term);
-	const normalizedWord = normalize(word);
-	const normalizedTermLength = normalizedTerm.length;
-	const normalizedWordLength = normalizedWord.length;
-	if (normalizedTermLength === 0) return 0;
-	if (normalizedWordLength < normalizedTermLength) {
-		logger.log(
-			`[sliding] "${word}" too short (wordLength=${normalizedWordLength} < termLength=${normalizedTermLength}) => skip`,
-			'warning'
-		);
-		return Infinity;
+	const { normalizedTerm, normalizedWord, normalizedTermLength, normalizedWordLength } = prepareData(term, word);
+
+	const quickCheckResult = quickCheckData(normalizedTermLength, normalizedWordLength, word, logger);
+	if (quickCheckResult !== null) {
+		return quickCheckResult;
 	}
 
 	let best = Infinity;

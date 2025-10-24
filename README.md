@@ -57,5 +57,6 @@ bun run index.ts
 
 ## TODO
 
-- Add new algorithm to calculate distance
-- Enhance CLI to support choosing new algorithm
+- Add more algorithms to calculate distance
+- Enhance CLI to support choosing new algorithm better
+- Adjust performance check and optimization

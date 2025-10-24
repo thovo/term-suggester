@@ -1,4 +1,5 @@
 import type { DistanceFn } from '../distance-strategies/distance-function.interface';
+import { nGramDistance } from '../distance-strategies/n-gram';
 import { slidingReplacement } from '../distance-strategies/sliding-replacement';
 import { CustomLogger } from '../logger/logger';
 
@@ -11,6 +12,7 @@ export interface Options {
 // registry of strategies
 const STRATEGIES: Record<string, DistanceFn> = {
 	sliding: slidingReplacement,
+	nGram: nGramDistance,
 };
 
 // -------------------- TermSuggester --------------------
@@ -19,7 +21,10 @@ export class TermSuggester {
 	#logger: CustomLogger;
 	#algorithmFn: DistanceFn;
 
-	constructor(private words: string[], private options: Options) {
+	constructor(
+		private words: string[],
+		private options: Options
+	) {
 		this.#logger = new CustomLogger(!!options.debug);
 		this.#algorithmFn = STRATEGIES[options.algorithm] ?? slidingReplacement;
 	}

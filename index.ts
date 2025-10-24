@@ -1,7 +1,7 @@
 import signale from 'signale';
 import { TermSuggester } from './term-suggester/term-suggester';
 
-import { input, number } from '@inquirer/prompts';
+import { input, number, select } from '@inquirer/prompts';
 // Example usage of TermSuggester
 // 'example', 'samples', 'temple', 'simple', 'examine', 'apple', 'templeton'
 // term: sample
@@ -17,6 +17,13 @@ const list = await input({
 			.map((w) => w.trim())
 			.filter((w) => w.length > 0)
 			.join(', '),
+});
+const algorithm = await select({
+	message: 'Select the distance algorithm to use:',
+	choices: [
+		{ name: 'sliding', value: 'sliding', description: 'Sliding Replacement following Hamming distance' },
+		{ name: 'nGram', value: 'nGram', description: 'n-Gram Distance(not really replacement, in development)' },
+	],
 });
 const debugMode = await input({
 	message: 'Enable debug mode? (y/n):',
@@ -36,7 +43,7 @@ const term = await input({
 
 // Initialize TermSuggester
 const termSuggester = new TermSuggester([...list.split(',')], {
-	algorithm: 'sliding',
+	algorithm,
 	debug: debugMode === 'y',
 	minWordLength,
 });
