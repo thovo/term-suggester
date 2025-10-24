@@ -21,6 +21,7 @@ const list = await input({
 const debugMode = await input({
 	message: 'Enable debug mode? (y/n):',
 	required: true,
+	default: 'n',
 	transformer: (value: string) => (value.toLowerCase().startsWith('y') ? 'y' : 'n'),
 });
 const minWordLength = await number({

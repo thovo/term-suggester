@@ -48,9 +48,14 @@ bun install
 ```
 
 Run with a sample here if you want to test it quickly:
-- Words: 'example', 'samples', 'temple', 'simple', 'examine', 'apple', 'templeton'
-- Term: sample
+- Words: gros, gras, graisse, agressif, go, ros, gro
+- Term: gros
 
 ```bash
 bun run index.ts
 ```
+
+## TODO
+
+- Add new algorithm to calculate distance
+- Enhance CLI to support choosing new algorithm
