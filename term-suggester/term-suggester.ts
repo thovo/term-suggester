@@ -29,21 +29,12 @@ export class TermSuggester {
 		this.#algorithmFn = STRATEGIES[options.algorithm] ?? slidingReplacement;
 	}
 
-	setAlgorithm(name: string): void {
-		this.#algorithmFn = STRATEGIES[name] ?? this.#algorithmFn;
-		this.#logger.log(`Algorithm set to ${name}`);
-	}
-
-	setDebug(flag: boolean): void {
-		this.#logger = new CustomLogger(flag);
-	}
-
 	getSimilarTerms(term: string, n = 5): string[] {
 		const results: { word: string; diff: number; lengthDiff: number }[] = [];
 
 		for (const w of this.words) {
 			if (this.options.minWordLength && w.length < this.options.minWordLength) {
-				this.#logger.log(`[filter] skip ${w} (too short)`, 'warning');
+				this.#logger.log(`skip ${w} (too short)`, 'warning');
 				continue;
 			}
 			const diff = this.#algorithmFn(term, w, this.#logger);
@@ -62,9 +53,7 @@ export class TermSuggester {
 		});
 
 		this.#logger.log(
-			`[final sorted results]: ${results
-				.map((r) => `${r.word}(diff=${r.diff},lenDiff=${r.lengthDiff})`)
-				.join(', ')}`
+			`[results]: ${results.map((r) => `${r.word}(diff=${r.diff},lenDiff=${r.lengthDiff})`).join(', ')}`
 		);
 		return results.slice(0, n).map((r) => r.word);
 	}

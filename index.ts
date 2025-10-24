@@ -32,7 +32,7 @@ const debugMode = await input({
 	transformer: (value: string) => (value.toLowerCase().startsWith('y') ? 'y' : 'n'),
 });
 const minWordLength = await number({
-	message: 'Minimum word length to consider (default 2):',
+	message: 'Minimum word length to consider to check (default 2):',
 	default: 2,
 	min: 0,
 });
